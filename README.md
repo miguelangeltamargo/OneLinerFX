@@ -10,6 +10,6 @@ Firefox userChrome css file for a one line browser bar.
 - Add the userChrome.css file to this folder
 - Start firefox
 - Right click the toolbar and select "customize toolbar".
-- At the bottom there will be a dop down menu called "Density" change to compact
+- At the bottom there will be a drop down menu called "Density" change to compact
 - Now move extensions and all to the right side of the tabs. (By the hamburger munu icon)
 - Click done
