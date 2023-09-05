@@ -5,7 +5,7 @@ Firefox userChrome css file for a one line browser bar.
 - Go to about:config
 - Search toolkit.legacyUserProfileCustomizations.stylesheets and change to true
 - Search compactmode and change to true
-- close Firefox and go to your firefox root profile folder.
+- Close Firefox and go to your firefox root profile folder.
 - Create a folder called "chrome"
 - Add the userChrome.css file to this folder
 - Start firefox
