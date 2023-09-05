@@ -1,0 +1,237 @@
+/* Source file https://github.com/MrOtherGuy/firefox-csshacks/tree/master/chrome/window_control_placeholder_support.css made available under Mozilla Public License v. 2.0
+See the above repository for updates as well as full license text. */
+
+/* Creates placeholders for window controls */
+/* This is a supporting file used by other stylesheets */
+
+/* This stylesheet is pretty much unnecessary if window titlebar is enabled */
+
+/* This file should preferably be imported before other stylesheets */
+
+/* Defaults for window controls on RIGHT side of the window */
+/* Modify these values to match your preferences */
+
+@media (-moz-platform: macos) {
+  :root:is([tabsintitlebar]) {
+    --uc-window-control-width: 72px;
+    /* Extra space reserved on both sides of the nav-bar to be able to drag the window */
+    --uc-window-drag-space-pre: 10px; /* left side*/
+    --uc-window-drag-space-post: 10px; /* right side*/
+  }
+  
+  :root .titlebar-buttonbox-container{ display: none }
+  :root #navigator-toolbox { position: relative; }
+  
+  :root #TabsToolbar > .titlebar-buttonbox-container:last-child,
+  :root #window-controls{
+    position: absolute;
+    display: flex;
+    top: 0;
+/*  bottom: -20px;*/
+    right:0;
+    height: 40px;
+  }
+  
+  :root #TabsToolbar > .titlebar-buttonbox-container:last-child,
+  :root[uidensity="compact"] #window-controls{ height: 32px }
+  
+  #nav-bar{
+    border-inline: var(--uc-window-drag-space-pre,0px) solid transparent;
+    border-inline-style: solid !important;
+    border-right-width: calc(var(--uc-window-control-width,0px) + var(--uc-window-drag-space-post,0px));
+    background-clip: border-box !important;
+  }
+  
+  /* Rules for window controls on left layout */
+  @media (-moz-gtk-csd-reversed-placement),
+         (-moz-platform: macos){
+    :root[tabsintitlebar="true"] #nav-bar{
+      border-inline-width: calc(var(--uc-window-control-width,0px) + var(--uc-window-drag-space-post,0px)) var(--uc-window-drag-space-pre,0px)
+    }
+    :root #TabsToolbar > .titlebar-buttonbox-container:last-child,
+    :root #window-controls{ right: unset }
+  }
+  
+  /* This pref can be used to force window controls on left even if that is not normal behavior on your OS */
+  @supports -moz-bool-pref("userchrome.force-window-controls-on-left.enabled"){
+    :root[tabsintitlebar="true"] #nav-bar{
+      border-inline-width: calc(var(--uc-window-control-width,0px) + var(--uc-window-drag-space-post,0px)) var(--uc-window-drag-space-pre,0px)
+    }
+    :root #TabsToolbar > .titlebar-buttonbox-container:last-child,
+    :root #window-controls{ right: unset; }
+    .titlebar-buttonbox-container{
+      -moz-box-ordinal-group: 0 !important; /* Fx <112 compatibility */
+      order: -1 !important;
+    }
+    .titlebar-buttonbox{
+      -moz-box-direction: reverse; /* Fx <112 compatibility */
+      flex-direction: row-reverse;
+    }
+  }
+}
+
+
+
+
+
+
+/* Source file https://github.com/MrOtherGuy/firefox-csshacks/tree/master/chrome/navbar_tabs_oneliner_menu_buttons_on_right.css made available under Mozilla Public License v. 2.0
+See the above repository for updates as well as full license text. */
+
+/* Variation of oneliner where menubutton and overflow button are next to window controls (if window controls are on right side) */
+
+/* IMPORTANT */
+/*
+Get window_control_placeholder_support.css
+Window controls will be all wrong without it
+*/
+
+:root[uidensity="compact"]{
+  --tab-block-margin: 2px !important;
+}
+
+/* Modify these to change relative widths or default height */
+#navigator-toolbox{
+  --uc-navigationbar-width: 35vw;
+  --uc-toolbar-height: 40px;
+}
+
+#scrollbutton-up,
+#scrollbutton-down{ border-block-width: 2px !important; }
+
+/* reserved space for overflow + menu buttons */
+#navigator-toolbox{
+  --uc-buttons-width: calc(96px + 5 * var(--toolbarbutton-outer-padding) + var(--uc-menubutton-padding,6px))
+}
+#nav-bar:not([nonemptyoverflow]) > #nav-bar-customization-target{ 
+  --uc-buttons-width: calc(64px + 4 * var(--toolbarbutton-outer-padding) + 6px)
+}
+/* Override for other densities */
+:root[uidensity="compact"] #navigator-toolbox{
+  --uc-toolbar-height: 34px;
+  --uc-menubutton-padding: -40px;
+}
+:root[uidensity="touch"] #navigator-toolbox{
+  --uc-toolbar-height: 44px;
+}
+#unified-extensions-button {
+position: fixed;
+right: 50px;
+top: 3px;
+/*--toolbarbutton-inner-padding: 10px !important;*/
+}
+/* Source file https://github.com/MrOtherGuy/firefox-csshacks/tree/master/chrome/compact_extensions_panel.css
+/* This style hides some information from the extensions-button panel, but makes it appear more compact. Might be useful for someone having lot of extensions */
+#unified-extensions-view{
+  --uei-icon-size: 16px;
+}
+.unified-extensions-item-menu-button.subviewbutton{
+  padding: 0px !important;
+  margin-inline-end: 0 !important;
+}
+.unified-extensions-item-menu-button.subviewbutton > .toolbarbutton-icon{
+  padding: 2px !important;
+}
+.unified-extensions-item-message-deck{
+  display: none
+}
+#unified-extensions-view > vbox > vbox > .unified-extensions-item{
+  padding-block: 0px !important;
+}
+#unified-extensions-panel .unified-extensions-item{
+  margin-block: 0 !important;
+}
+
+
+:root[uidensity="compact"] #urlbar-container{
+  --urlbar-container-height: var(--uc-toolbar-height) !important;
+  max-width: 79%;
+  padding-block: 0 !important;
+}
+:root[uidensity="compact"] #urlbar{
+  --urlbar-toolbar-height: var(--uc-toolbar-height) !important;
+}
+
+/* prevent urlbar overflow on narrow windows */
+/* Dependent on how many items are in navigation toolbar ADJUST AS NEEDED */
+@media screen and (max-width: 1000px){
+  #urlbar-container{
+    min-width: 300px !important;
+    flex-shrink: 1 !important;
+  }
+}
+
+#TabsToolbar{
+  margin-left: var(--uc-navigationbar-width);
+  --tabs-navbar-shadow-size: 0px;
+  color: var(--toolbar-color);
+}
+
+#tabbrowser-tabs{
+  --tab-min-height: calc(var(--uc-toolbar-height) - 2 * var(--tab-block-margin,0px)) !important;
+}
+/* Need to set background color for selected tab so it can be distinguished from background */
+#TabsToolbar .tab-background[selected]{
+  background: var(--lwt-selected-tab-background-color,rgba(0,0,0,0.2)) !important;
+}
+
+#TabsToolbar[brighttext] .tab-background[selected]{
+  background: var(--lwt-selected-tab-background-color,rgba(255,255,255,0.2)) !important;
+}
+
+/* This isn't useful when tabs start in the middle of the window */
+.titlebar-spacer[type="pre-tabs"]{ width:8px !important}
+#nav-bar{ margin-top: calc(0px - var(--uc-toolbar-height)); }
+
+#nav-bar-customization-target{ padding-right: calc(100vw - (var(--uc-navigationbar-width)) - var(--uc-window-control-width) - var(--uc-buttons-width) - var(--uc-window-drag-space-post)) }
+
+@supports -moz-bool-pref("layout.css.osx-font-smoothing.enabled"){
+  .titlebar-buttonbox-container{ position: fixed; display: blocK; left: 0px; z-index: 3; }
+  #nav-bar-customization-target{ padding-right: calc(100vw - (var(--uc-navigationbar-width)) - var(--uc-buttons-width) - var(--uc-window-drag-space-pre)) }
+}
+
+:root[sizemode="fullscreen"] #TabsToolbar > .titlebar-buttonbox-container,
+#TabsToolbar > .toolbar-items{
+  position: relative !important;
+  z-index: 2
+}
+
+:root[sizemode="fullscreen"] #TabsToolbar > .titlebar-spacer[type="post-tabs"]{
+  display: flex !important;
+}
+
+.titlebar-spacer[type="post-tabs"]{
+  width: calc(var(--uc-buttons-width) + var(--uc-window-drag-space-post)) !important;
+}
+:root[privatebrowsingmode="temporary"] .titlebar-spacer[type="post-tabs"]{
+  width: var(--uc-buttons-width) !important
+}
+
+#PanelUI-button,#nav-bar-overflow-button{
+  margin: 0px !important;
+  border: 0px !important;
+  position: relative;
+  z-index: 3;
+}
+/* 1px margin on touch density causes tabs to be too high */
+.tab-close-button{ margin-top: 0 !important }
+
+/* Hide dropdown placeholder */
+#urlbar-container:not(:hover) .urlbar-history-dropmarker{ margin-inline-start: -28px; }
+
+/* Source file https://github.com/MrOtherGuy/firefox-csshacks/tree/master/chrome/drag_window_from_urlbar.css made available under Mozilla Public License v. 2.0
+See the above repository for updates as well as full license text. */
+
+/* Makes the window draggable from urlbar when urlbar is not focused. This means you can't click the urlbar text to activate it normally. But right-click works to activate urlbar. */
+
+.urlbar-input-box,#urlbar-input,#urlbar-scheme,#urlbar-container{
+  -moz-window-dragging: drag;
+  cursor: default;
+}
+#urlbar-input-container > box,
+#page-action-buttons,
+#urlbar-container:focus-within,
+#urlbar-container:focus-within :is(.urlbar-input-box,#urlbar-input,#urlbar-scheme,#urlbar-container){
+  -moz-window-dragging: no-drag;
+  cursor: auto;
+}
