@@ -237,3 +237,9 @@ See the above repository for updates as well as full license text. */
   -moz-window-dragging: no-drag;
   cursor: auto;
 }
+#identity-icon-box {
+  background: none !important;
+}
+#identity-box.extensionPage #identity-icon-label {
+  display: none !important;
+}
